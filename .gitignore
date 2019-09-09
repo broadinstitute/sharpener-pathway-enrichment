@@ -21,3 +21,14 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+#eclipse-related files
+java-play-framework-server/bin/
+java-play-framework-server/target/
+java-play-framework-server/project/target/
+java-play-framework-server/project/project/target/
+
+java-play-framework-server/.settings
+java-play-framework-server/.project
+java-play-framework-server/.classpath
+java-play-framework-server/.cache-main
