@@ -1,10 +1,10 @@
 swagger: '2.0'
 info:
-  title: API for remove-gene filter
+  title: API for pathway-enrichment filter
   version: 1.2.0
-  description: API for remove-gene filter.
+  description: API for pathway-enrichment filter.
 host: sharpener.ncats.io
-basePath: /remove_genes_filter
+basePath: /pathway_enrichment
 schemes:
 - "https"
 
