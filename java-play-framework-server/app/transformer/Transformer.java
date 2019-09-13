@@ -1,16 +1,14 @@
 package transformer;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.io.InputStreamReader;
-import java.io.BufferedReader;
 
 import apimodels.Attribute;
 import apimodels.GeneInfo;
+import apimodels.GeneInfoIdentifiers;
 import apimodels.Parameter;
 import apimodels.Property;
 import apimodels.TransformerInfo;
@@ -26,7 +24,6 @@ public class Transformer {
 	private static final String DEFAULT_PATHWAY_PVALUE = "1";
 	private static final String DEFAULT_GENE_PVALUE    = "1e-5";
 
-	private static HashMap<String,ArrayList<GeneInfo>> geneSets = new HashMap<String,ArrayList<GeneInfo>>();
 
 	public static TransformerInfo transformerInfo() {
 
@@ -79,10 +76,13 @@ public class Transformer {
 		
 		StringBuilder myGENES = new StringBuilder("");
 		ArrayList<GeneInfo> genes = new ArrayList<GeneInfo>();
+		HashMap<String,GeneInfo> inputGenes = new HashMap<String,GeneInfo>();
 		for (GeneInfo geneInfo : query.getGenes()) {
 			if(geneInfo.getIdentifiers() != null && geneInfo.getIdentifiers().getEntrez() != null) {
 				myGENES.append(myGENES.toString().equals("") ? "" : ",").append(geneInfo.getIdentifiers().getEntrez());
+				inputGenes.put(geneInfo.getIdentifiers().getEntrez(), geneInfo);
 			}
+			genes.add(geneInfo);
 		}
 
 		Runtime rt = Runtime.getRuntime();
@@ -103,14 +103,19 @@ public class Transformer {
 				String pathwayName = row[1];
 				String pathwayPval = row[2];
 				String genePval    = row[3];
-				GeneInfo gene = new GeneInfo().geneId(geneId);
-				gene.addAttributesItem(new Attribute().name("entrez_gene_id").value(geneId).source(NAME));
+				GeneInfo gene = inputGenes.get(geneId);
+				if (gene == null) {
+					gene = new GeneInfo().geneId(geneId);
+					gene.setIdentifiers(new GeneInfoIdentifiers().entrez(geneId));
+					genes.add(gene);
+					inputGenes.put(geneId, gene);
+				}
 				if(!pathwayName.equals("")) {
 					gene.addAttributesItem(new Attribute().name("enriched pathway name").value(pathwayName).source(NAME));
             	    gene.addAttributesItem(new Attribute().name("enriched pathway p-value").value(pathwayPval).source(NAME));
                 	gene.addAttributesItem(new Attribute().name("gene within pathway p-value").value(genePval).source(NAME));
 				}
-				genes.add(gene); 
+				 
 			}
 
 			//Print any errors from the attempted command

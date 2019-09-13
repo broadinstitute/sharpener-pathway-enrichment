@@ -17,7 +17,7 @@ foreach(split /,/, $genes) { $myGenes{$_} = 1 }
 
 open(IN,"$dirname/uniprot2ncbi.txt") || die "Unable to open uniprot2ncbi.txt\n";
 while(<IN>) {
-	chomp;
+	s/[\r\n]+//g;
 	($uniprot,$ncbi) = split /\t/, $_;
 	$uniprot2ncbi{$uniprot} = $ncbi;
 }
