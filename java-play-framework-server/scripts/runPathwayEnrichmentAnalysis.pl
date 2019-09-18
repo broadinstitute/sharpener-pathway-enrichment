@@ -62,13 +62,13 @@ foreach $g (keys %myGenes) {
 	}
 }
 
-foreach $g (sort { $pathway2pval{$gene2pathway{$a}} <=> $pathway2pval{$gene2pathway{$b}} || $gene2pval{$a} <=> $gene2pval{$b} || $a <=> $b } keys %myGenes) {
-	print "$g\t$gene2pathway{$g}\t$pathway2pval{$gene2pathway{$g}}\t$gene2pval{$g}\n";
-}
+#foreach $g (sort { $pathway2pval{$gene2pathway{$a}} <=> $pathway2pval{$gene2pathway{$b}} || $gene2pval{$a} <=> $gene2pval{$b} || $a <=> $b } keys %myGenes) {
+#	print "$g\t$gene2pathway{$g}\t$pathway2pval{$gene2pathway{$g}}\t$gene2pval{$g}\n";
+#}
 
 $count = 0;
 foreach $g (sort { $pathway2pval{$gene2pathway{$a}} <=> $pathway2pval{$gene2pathway{$b}} || $gene2pval{$a} <=> $gene2pval{$b} || $a <=> $b } keys %gene2pval) {
-	next if exists $myGenes{$g};
+	#next if exists $myGenes{$g};
 	next if $pathway2pval{$gene2pathway{$g}} > $PWAY_PV;
 	next if    $gene2pval{$g}                > $GENE_PV;
 	print "$g\t$gene2pathway{$g}\t$pathway2pval{$gene2pathway{$g}}\t$gene2pval{$g}\n";

@@ -75,20 +75,21 @@ public class Transformer {
 		}
 		
 		StringBuilder myGENES = new StringBuilder("");
-		ArrayList<GeneInfo> genes = new ArrayList<GeneInfo>();
+
 		HashMap<String,GeneInfo> inputGenes = new HashMap<String,GeneInfo>();
 		for (GeneInfo geneInfo : query.getGenes()) {
 			if(geneInfo.getIdentifiers() != null && geneInfo.getIdentifiers().getEntrez() != null) {
 				myGENES.append(myGENES.toString().equals("") ? "" : ",").append(geneInfo.getIdentifiers().getEntrez());
 				inputGenes.put(geneInfo.getIdentifiers().getEntrez(), geneInfo);
 			}
-			genes.add(geneInfo);
 		}
 
 		Runtime rt = Runtime.getRuntime();
 
 		String[] commands = {"perl", "scripts/runPathwayEnrichmentAnalysis.pl", myMAX_GENES, myPATHWAY_PVALUE, myGENE_PVALUE, myGENES.toString()};
 	
+		ArrayList<GeneInfo> genes = new ArrayList<GeneInfo>();
+		HashMap<String,GeneInfo> outputGenes = new HashMap<String,GeneInfo>();
 		try {
 			Process proc = rt.exec(commands);
 
@@ -104,18 +105,15 @@ public class Transformer {
 				String pathwayPval = row[2];
 				String genePval    = row[3];
 				GeneInfo gene = inputGenes.get(geneId);
-				if (gene == null) {
-					gene = new GeneInfo().geneId(geneId);
-					gene.setIdentifiers(new GeneInfoIdentifiers().entrez(geneId));
-					genes.add(gene);
-					inputGenes.put(geneId, gene);
-				}
-				if(!pathwayName.equals("")) {
+				if(gene != null && !pathwayName.equals("")) {
 					gene.addAttributesItem(new Attribute().name("enriched pathway name").value(pathwayName).source(NAME));
             	    gene.addAttributesItem(new Attribute().name("enriched pathway p-value").value(pathwayPval).source(NAME));
                 	gene.addAttributesItem(new Attribute().name("gene within pathway p-value").value(genePval).source(NAME));
+                	if (!outputGenes.containsKey(geneId)) {
+        				genes.add(gene);
+        				outputGenes.put(geneId, gene);
+                	}
 				}
-				 
 			}
 
 			//Print any errors from the attempted command
@@ -124,7 +122,8 @@ public class Transformer {
 			}
 		}
 		catch(Exception e) {
-			System.err.println(e.toString()); 
+			System.err.println(e.toString());
+			e.printStackTrace();
 		}
 
 		return genes;
