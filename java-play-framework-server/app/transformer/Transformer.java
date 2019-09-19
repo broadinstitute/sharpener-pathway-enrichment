@@ -1,59 +1,60 @@
 package transformer;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import apimodels.Attribute;
 import apimodels.GeneInfo;
 import apimodels.GeneInfoIdentifiers;
-import apimodels.Parameter;
 import apimodels.Property;
 import apimodels.TransformerInfo;
 import apimodels.TransformerQuery;
 
 public class Transformer {
 
-	private static final String NAME                  = "Pathway enrichment";
-	private static final String MAX_GENES             = "max_genes";
-	private static final String GENE_PVALUE           = "gene_pvalue";
-	private static final String PATHWAY_PVALUE        = "pathway_pvale";
-	private static final String DEFAULT_MAX_GENES      = "100";
-	private static final String DEFAULT_PATHWAY_PVALUE = "1";
-	private static final String DEFAULT_GENE_PVALUE    = "1e-5";
+	private static String transformerName                  = "Pathway enrichment";
+	private static String MAX_GENES             = "max_genes";
+	private static String GENE_PVALUE           = "gene_pvalue";
+	private static String PATHWAY_PVALUE        = "pathway_pvale";
+	private static String DEFAULT_MAX_GENES      = "100";
+	private static String DEFAULT_PATHWAY_PVALUE = "1";
+	private static String DEFAULT_GENE_PVALUE    = "1e-5";
+	
+	private static ObjectMapper mapper = new ObjectMapper();
+	
+	static {
+		mapper.setSerializationInclusion(Include.NON_NULL);
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+	}
 
 
 	public static TransformerInfo transformerInfo() {
-
-		TransformerInfo transformerInfo = new TransformerInfo().name(NAME);
-		transformerInfo.function(TransformerInfo.FunctionEnum.EXPANDER);
-		transformerInfo.description("Pathway enrichment analysis with pathDIP");
-		transformerInfo.addParametersItem(
-				new Parameter()
-					.name(MAX_GENES)
-					.type(Parameter.TypeEnum.INT)
-					._default(DEFAULT_MAX_GENES)
-					.suggestedValues("from 10 to 1000")
-				);
-		transformerInfo.addParametersItem(
-				new Parameter()
-					.name(PATHWAY_PVALUE)
-					.type(Parameter.TypeEnum.DOUBLE)
-					._default(DEFAULT_PATHWAY_PVALUE)
-					.suggestedValues("from 1 to 1e-5")
-				);
-		transformerInfo.addParametersItem(
-				new Parameter()
-					.name(GENE_PVALUE)
-					.type(Parameter.TypeEnum.DOUBLE)
-					._default(DEFAULT_GENE_PVALUE)
-					.suggestedValues("from 1e-3 to 1e-30")
-				);
-
-		transformerInfo.addRequiredAttributesItem("identifiers.entrez");
-		return transformerInfo;
+		try {
+			String json = new String(Files.readAllBytes(Paths.get("transformer_info.json")));
+			TransformerInfo info = mapper.readValue(json, TransformerInfo.class);
+			transformerName = info.getName();
+			MAX_GENES = info.getParameters().get(0).getName();
+			DEFAULT_MAX_GENES = info.getParameters().get(0).getDefault();
+			GENE_PVALUE = info.getParameters().get(1).getName();
+			DEFAULT_MAX_GENES = info.getParameters().get(1).getDefault();
+			DEFAULT_PATHWAY_PVALUE = info.getParameters().get(2).getName();
+			DEFAULT_GENE_PVALUE = info.getParameters().get(2).getDefault();
+			return info;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 
@@ -111,9 +112,9 @@ public class Transformer {
 					inputGenes.put(geneId, gene);
 				}
 				if(!pathwayName.equals("")) {
-					gene.addAttributesItem(new Attribute().name("enriched pathway name").value(pathwayName).source(NAME));
-            	    gene.addAttributesItem(new Attribute().name("enriched pathway p-value").value(pathwayPval).source(NAME));
-                	gene.addAttributesItem(new Attribute().name("gene within pathway p-value").value(genePval).source(NAME));
+					gene.addAttributesItem(new Attribute().name("enriched pathway name").value(pathwayName).source(transformerName));
+            	    gene.addAttributesItem(new Attribute().name("enriched pathway p-value").value(pathwayPval).source(transformerName));
+                	gene.addAttributesItem(new Attribute().name("gene within pathway p-value").value(genePval).source(transformerName));
 				}
 				 
 			}
