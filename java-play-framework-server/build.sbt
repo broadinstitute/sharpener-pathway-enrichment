@@ -1,6 +1,6 @@
 name := """pathway-enrichment"""
 
-version := "1.2.0"
+version := "1.2.1"
 
 lazy val root = (project in file(".")).enablePlugins(PlayJava)
 
