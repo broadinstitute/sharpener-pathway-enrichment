@@ -1,0 +1,42 @@
+{
+    "name": "pathDIP pathway-enrichment analysis",
+    "label": "pathDIP",
+    "version": "1.3.0",
+    "function": "expander",
+    "description": "Gene-list expander based on pathway-enrichment analysis using pathDIP (http://ophid.utoronto.ca/pathDIP/).",
+    "properties": {
+        "list_predicate": "related_to",
+        "member_predicate": "related_to",
+        "source_url": "http://ophid.utoronto.ca/pathDIP/",
+        "method": "enrichment"
+    },
+    "parameters": [
+        {
+            "default": "64",
+            "name": "maximum number of genes",
+            "type": "int",
+            "allowed_values": null,
+            "suggested_values": "e.g., 10, 100, 1000",
+            "lookup_url": null
+        },
+        {
+            "default": "1e-5",
+            "name": "pathway p-value",
+            "type": "double",
+            "allowed_values": null,
+            "suggested_values": "positive values < 0.5",
+            "lookup_url": null
+        },
+        {
+            "default": "1e-3",
+            "name": "gene p-value",
+            "type": "double",
+            "allowed_values": null,
+            "suggested_values": "positive values < 0.5",
+            "lookup_url": null
+        }
+    ],
+    "required_attributes": [
+        "identifiers.entrez"
+    ]
+}

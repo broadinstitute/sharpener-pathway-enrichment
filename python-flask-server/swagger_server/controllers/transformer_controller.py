@@ -7,6 +7,7 @@ from swagger_server.models.transformer_info import TransformerInfo  # noqa: E501
 from swagger_server.models.transformer_query import TransformerQuery  # noqa: E501
 from swagger_server import util
 
+from swagger_server.controllers.transformer import transformer_info
 
 def transform_post(query):  # noqa: E501
     """transform_post
@@ -31,4 +32,4 @@ def transformer_info_get():  # noqa: E501
 
     :rtype: TransformerInfo
     """
-    return 'do some magic!'
+    return transformer_info()
