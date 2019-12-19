@@ -25,8 +25,8 @@ public class Transformer {
 
 	private static String transformerName                  = "Pathway enrichment";
 	private static String MAX_GENES             = "max_genes";
+	private static String PATHWAY_PVALUE        = "pathway_pvalue";
 	private static String GENE_PVALUE           = "gene_pvalue";
-	private static String PATHWAY_PVALUE        = "pathway_pvale";
 	private static String DEFAULT_MAX_GENES      = "100";
 	private static String DEFAULT_PATHWAY_PVALUE = "1";
 	private static String DEFAULT_GENE_PVALUE    = "1e-5";
@@ -46,9 +46,9 @@ public class Transformer {
 			transformerName = info.getName();
 			MAX_GENES = info.getParameters().get(0).getName();
 			DEFAULT_MAX_GENES = info.getParameters().get(0).getDefault();
-			GENE_PVALUE = info.getParameters().get(1).getName();
-			DEFAULT_MAX_GENES = info.getParameters().get(1).getDefault();
-			DEFAULT_PATHWAY_PVALUE = info.getParameters().get(2).getName();
+			PATHWAY_PVALUE = info.getParameters().get(1).getName();
+			DEFAULT_PATHWAY_PVALUE = info.getParameters().get(1).getDefault();
+			GENE_PVALUE = info.getParameters().get(2).getName();
 			DEFAULT_GENE_PVALUE = info.getParameters().get(2).getDefault();
 			return info;
 		} catch (IOException e) {
