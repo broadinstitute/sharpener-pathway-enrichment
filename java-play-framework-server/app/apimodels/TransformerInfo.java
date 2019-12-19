@@ -1,6 +1,7 @@
 package apimodels;
 
 import apimodels.Parameter;
+import apimodels.TransformerInfoProperties;
 import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.*;
@@ -11,12 +12,18 @@ import javax.validation.constraints.*;
 /**
  * Definition of the transformer.
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaPlayFrameworkCodegen", date = "2019-09-09T21:40:14.444Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaPlayFrameworkCodegen", date = "2019-12-19T19:52:42.700Z")
 
 @SuppressWarnings({"UnusedReturnValue", "WeakerAccess"})
 public class TransformerInfo   {
   @JsonProperty("name")
   private String name = null;
+
+  @JsonProperty("label")
+  private String label = null;
+
+  @JsonProperty("version")
+  private String version = null;
 
   /**
    * Function of the transformer, one of 'producer', 'expander', 'filter'.
@@ -57,6 +64,9 @@ public class TransformerInfo   {
   @JsonProperty("description")
   private String description = null;
 
+  @JsonProperty("properties")
+  private TransformerInfoProperties properties = null;
+
   @JsonProperty("parameters")
   private List<Parameter> parameters = new ArrayList<>();
 
@@ -79,6 +89,40 @@ public class TransformerInfo   {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public TransformerInfo label(String label) {
+    this.label = label;
+    return this;
+  }
+
+   /**
+   * Short label for GUI display.
+   * @return label
+  **/
+    public String getLabel() {
+    return label;
+  }
+
+  public void setLabel(String label) {
+    this.label = label;
+  }
+
+  public TransformerInfo version(String version) {
+    this.version = version;
+    return this;
+  }
+
+   /**
+   * Transformer's version.
+   * @return version
+  **/
+    public String getVersion() {
+    return version;
+  }
+
+  public void setVersion(String version) {
+    this.version = version;
   }
 
   public TransformerInfo function(FunctionEnum function) {
@@ -115,6 +159,24 @@ public class TransformerInfo   {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public TransformerInfo properties(TransformerInfoProperties properties) {
+    this.properties = properties;
+    return this;
+  }
+
+   /**
+   * Get properties
+   * @return properties
+  **/
+  @Valid
+  public TransformerInfoProperties getProperties() {
+    return properties;
+  }
+
+  public void setProperties(TransformerInfoProperties properties) {
+    this.properties = properties;
   }
 
   public TransformerInfo parameters(List<Parameter> parameters) {
@@ -175,15 +237,18 @@ public class TransformerInfo   {
     }
     TransformerInfo transformerInfo = (TransformerInfo) o;
     return Objects.equals(name, transformerInfo.name) &&
+        Objects.equals(label, transformerInfo.label) &&
+        Objects.equals(version, transformerInfo.version) &&
         Objects.equals(function, transformerInfo.function) &&
         Objects.equals(description, transformerInfo.description) &&
+        Objects.equals(properties, transformerInfo.properties) &&
         Objects.equals(parameters, transformerInfo.parameters) &&
         Objects.equals(requiredAttributes, transformerInfo.requiredAttributes);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, function, description, parameters, requiredAttributes);
+    return Objects.hash(name, label, version, function, description, properties, parameters, requiredAttributes);
   }
 
   @SuppressWarnings("StringBufferReplaceableByString")
@@ -193,8 +258,11 @@ public class TransformerInfo   {
     sb.append("class TransformerInfo {\n");
     
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    label: ").append(toIndentedString(label)).append("\n");
+    sb.append("    version: ").append(toIndentedString(version)).append("\n");
     sb.append("    function: ").append(toIndentedString(function)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
+    sb.append("    properties: ").append(toIndentedString(properties)).append("\n");
     sb.append("    parameters: ").append(toIndentedString(parameters)).append("\n");
     sb.append("    requiredAttributes: ").append(toIndentedString(requiredAttributes)).append("\n");
     sb.append("}");

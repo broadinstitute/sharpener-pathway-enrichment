@@ -8,7 +8,7 @@ import javax.validation.constraints.*;
 /**
  * Property
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaPlayFrameworkCodegen", date = "2019-09-09T21:40:14.444Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaPlayFrameworkCodegen", date = "2019-12-19T19:52:42.700Z")
 
 @SuppressWarnings({"UnusedReturnValue", "WeakerAccess"})
 public class Property   {

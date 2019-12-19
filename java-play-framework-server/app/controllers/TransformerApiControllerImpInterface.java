@@ -1,5 +1,6 @@
 package controllers;
 
+import apimodels.ErrorMsg;
 import apimodels.GeneInfo;
 import apimodels.TransformerInfo;
 import apimodels.TransformerQuery;
