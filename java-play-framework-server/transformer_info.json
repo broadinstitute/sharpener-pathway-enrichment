@@ -1,9 +1,15 @@
 {
     "name": "pathDIP pathway-enrichment analysis",
-    "url": "https://sharpener.ncats.io/pathway_enrichment",
-    "status": "online",
+    "label": "pathDIP",
+    "version": "1.3.0.beta",
     "function": "expander",
     "description": "Gene-list expander based on pathway-enrichment analysis using pathDIP (http://ophid.utoronto.ca/pathDIP/).",
+    "properties": {
+        "list_predicate": "related_to",
+        "member_predicate": "related_to",
+        "source_url": "http://ophid.utoronto.ca/pathDIP/",
+        "method": "enrichment"
+    },
     "parameters": [
         {
             "default": "64",
